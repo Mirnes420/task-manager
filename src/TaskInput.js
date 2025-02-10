@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 function TaskInput({ addTask }) {
   const [text, setText] = useState("");
@@ -7,11 +8,14 @@ function TaskInput({ addTask }) {
     e.preventDefault();
     if (text.trim()) {
       addTask({
-        id: Date.now(), // Add a unique ID for each task
+        id: uuidv4(), // Add a unique ID for each task
         text: text.trim(),
         completed: false,
-      });
+      }); 
       setText(""); // Clear the input
+    }
+    else {
+      alert("Please enter a task");
     }
   };
 

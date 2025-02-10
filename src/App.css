@@ -21,12 +21,14 @@ body {
   padding: 1em;
   margin-top: 2em;
   margin-bottom: 2em;
-  font-size: 1.5em;
+  font-size: 1em;
   background-color: transparent;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   width: 50%;
-  border-radius: 10px;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  border-top-left-radius: 40px;
 }
 
 #input-form > input::placeholder {
@@ -34,13 +36,58 @@ body {
   
 }
 
-#task-li {
-  list-style-type: none;
+
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-#task {
-  font-size: 1.5em;
+
+
+
+.task-li {
+  font-size: 1.1em;
+  text-align: start;
+  border-bottom: 1px solid #ccc;
+  padding: 0.3em;
+  width: 95%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em; /* Adds spacing between text and buttons */
+  flex-wrap: wrap; /* Allows text to wrap to a new row */
+  
 }
+
+
+
+.task-container {
+  flex: 1;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 70%;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.3) #f0f0f0; /* Firefox (thumb & track) */
+
+}
+
+.task-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5em; /* Adds spacing between buttons */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.task-li:hover .task-buttons {
+  opacity: 1;
+  cursor: pointer;
+}
+
 
 #task-list {
   width: 30%;
@@ -48,55 +95,246 @@ body {
   text-align: left;
 }
 
+
+.edit-input {
+  border: none;
+  padding: 0.5em;
+  font-size: 1em;
+  background-color: transparent;
+  color: white;
+  width: 50%;
+  border-radius: 10px;
+}
+
+
 .task-card {
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 1em;
-  border-radius: 10px;
-  margin: auto;
-  color: white; 
+  color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
   transition: background-color 0.3s ease;
-  max-width: 50%;
+  max-width: 60%;
+  max-height: 80vh;
+  overflow-y: auto;
+  margin: auto;
+  margin-top: 2em;
+  border-radius: 0px;
+  padding-top: 0; /* Remove padding that would be caused by hidden task-actions */
+}
+
+
+.task-card::-webkit-scrollbar, .task-card {
+  border-radius: 0;
+}
+/* For WebKit Browsers (Chrome, Edge, Safari) */
+.task-card::-webkit-scrollbar {
+  width: 8px; /* Adjust scrollbar width */
+  
+  
+}
+
+.task-card::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Track color */
+  border: 1px solid black;
+  border-radius: 10%;
+}
+
+.task-card::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3); /* Scroll thumb color */
+  border-radius: 4px;
+  transition: background 0.3s ease-in-out;
 }
 
 .task-checkbox {
+  width: 20px;
+  height: 20px;
   margin-right: 2em;
   margin-left: 2em;
-  width: 20px; 
-  height: 20px; 
-  transform: scale(1.5); 
-  cursor: pointer; 
+  cursor: pointer;
+  appearance: none; /* Removes default styling */
+  border: 2px solid white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.task-checkbox:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid yellow;
+}
+
+.task-checkbox:checked {
+  background-color: yellow;
+  border-color: yellow;
+  position: relative;
+}
+
+.task-checkbox:checked::after {
+  content: '✔';
+  font-size: 16px;
+  color: black;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+}
+
+.task-li:has(.task-checkbox:checked) {
+  color: gray; /* Adjust text color for contrast */
 }
 
 
-#delete {
-  color: rgb(239, 97, 45);
+
+#edit {
+  color: white;
   border: none;
-  font-size: 1.5em;
+  font-size: 1em;
   margin-left: 0.3em;
   padding-top: 0.3em;
-}
-
-#delete:hover {
-  color: rgb(255, 0, 0);
   cursor: pointer;
 }
 
+#delete, #edit {
+  color: white;
+  font-size: 1.5em;
+  margin-left: 0.3em;
+  padding: 0.3em;
+  opacity: 0.8;
+  transition: opacity 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+#delete:hover, #edit:hover {
+  opacity: 1;
+  color: yellow;
+  cursor: pointer;
+}
 .quote-container {
-  margin-top: 2em;
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center align items */
+  justify-content: center; /* Centers the quote */
+  text-align: center;
   width: 100%;
+  margin: auto;
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
     bottom: 0;
     left: auto;
     right: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    
 }
 
 .motivational-quote {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: 100;
-  margin-bottom: 1.5em;
-  padding: 0 1em;
   color: white; 
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); 
+}
+
+
+.quote-author {
+  text-decoration: none;
+  font-size: 0.8em;
+  font-weight: 100;
+  color: white;
+  text-align: center;
+  padding-right: 2em;
+  padding-bottom: 1em;
+}
+
+.quote-author:hover {
+  color: yellow;
+  cursor: pointer;
+}
+
+
+
+
+/* Initially hidden task-actions */
+.task-actions {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute; /* Prevents it from taking up space */
+  top: 0; /* Position it at the top if it's invisible */
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
+  max-width: 60%;
+  
+}
+
+/* Style for task actions */
+.task-actions.show {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s 0s;
+  position: sticky;
+  top: 0; /* Ensures task actions stay at the top */
+  z-index: 10;
+  display: flex;
+  justify-content: space-between; /* Distribute space between the elements */
+  align-items: center; /* Vertically align the items in the center */
+  gap: 10px; /* Optional space between buttons */
+  padding: 1em; /* Add some padding to the task actions area */
+  width: 100%;
+}
+
+/* Style for the search bar */
+#search-bar {
+  border: none;
+  padding: 0.3em;
+  font-size: 1.1em;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  width: 30%;
+  border-radius: 10px;
+  position: sticky;
+  top: 1em; /* Adjust the top position to allow for padding */
+  z-index: 10;
+  display: block;
+  margin-left: 1em;
+}
+
+
+
+.delete-done-btn,
+.delete-all-btn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.6s ease-in-out, border-color 0.6s ease-in-out;
+}
+
+.delete-done-btn {
+  border-color: #f39c12;
+  color: white;
+}
+
+.delete-all-btn {
+  border-color: #e74c3c;
+  color: white;
+}
+
+
+.delete-done-btn:hover,
+.delete-all-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+.random-bg-btn {
+  font-size:1.5rem;
+  color: white;
+  position: fixed;
+    top:10px;
+    right: 10px;
+}
+
+.random-bg-btn:hover {
+  color: yellow;
+  cursor: pointer;
 }
